@@ -10,7 +10,14 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install' }
 Plug 'github/copilot.vim'
 Plug 'preservim/nerdtree'
 Plug 'Mofiqul/vscode.nvim'
+Plug 'junegunn/gv.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'pwntester/octo.nvim'
 call plug#end()
+lua << EOF
+require"octo".setup()
+EOF
 
 " 基本設定
 set number
