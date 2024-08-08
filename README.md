@@ -1,4 +1,4 @@
-# Debian-based Neovim Setup
+# Debian-based Development Environment Setup
 
 This repository contains a script to set up a development environment on Debian-based Linux distributions (such as Ubuntu, Debian, Linux Mint, etc.), focusing on Neovim, tmux, and related tools.
 
