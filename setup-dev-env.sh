@@ -222,7 +222,7 @@ setup_nvim() {
     if [ -f "$HOME/.config/nvim/init.vim" ]; then
         backup_file "$HOME/.config/nvim/init.vim"
     fi
-    cp init.vim.temp "$HOME/.config/nvim/init.vim"
+    cp init.vim "$HOME/.config/nvim/init.vim"
 }
 
 # Tmuxの設定ファイルを配置
@@ -230,7 +230,7 @@ setup_tmux() {
     if [ -f "$HOME/.tmux.conf" ]; then
         backup_file "$HOME/.tmux.conf"
     fi
-    cp tmux.conf.temp "$HOME/.tmux.conf"
+    cp tmux.conf "$HOME/.tmux.conf"
 }
 
 # Neovim のインストール
