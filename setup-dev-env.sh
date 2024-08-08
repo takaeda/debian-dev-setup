@@ -294,6 +294,56 @@ set clipboard+=unnamedplus
 syntax on
 filetype plugin indent on
 
+\" Disable compatibility with vi
+set nocompatible
+
+\" General settings
+set nobackup
+set autoindent
+set ul=0
+set showmode
+set report=1
+set showmatch
+set suffixes=.log,.aux,.dvi,.o,.bak,.swp
+
+\" Tab and indentation settings
+set tabstop=4
+set noexpandtab
+set smartindent
+set smarttab
+set shiftwidth=4
+set expandtab
+set smarttab
+
+\" Interface settings
+set wildmenu
+set nowrapscan
+set winheight=5
+set history=50
+set laststatus=1
+set ruler
+set incsearch
+set modeline
+set nobomb
+
+\" Key mappings
+map <C-g> :buffers<CR>
+map <C-k> :bdelete<CR>
+map <C-x>o <C-w><C-w><C-w>_
+
+\" Insert mode mappings
+inoremap <C-h> <BS>
+
+\" UTF-8 settings
+set ambiwidth=double
+set fileencoding=utf-8
+set encoding=utf-8
+set fileencodings=utf-8,euc-jp,japan,shift-jis,iso-2022-jp,cp932,utf-16,ucs-2-internal,ucs-2
+set termencoding=utf-8
+
+\" Additional key mappings
+map Q gq
+
 \" クリップボードとの統合
 set clipboard+=unnamedplus
 
@@ -388,6 +438,9 @@ set -g default-terminal \"screen-256color\"
 # ステータスバーの色を設定する
 set -g status-fg white
 set -g status-bg black
+
+set-option -g history-limit 10000
+set-window-option -g mode-keys vi
 EOF"
     print_color "32" "Created tmux.conf"
 fi
