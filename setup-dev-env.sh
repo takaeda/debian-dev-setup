@@ -216,6 +216,23 @@ get_shell_config_file() {
     esac
 }
 
+# Neovimの設定ファイルを配置
+setup_nvim() {
+    mkdir -p "$HOME/.config/nvim"
+    if [ -f "$HOME/.config/nvim/init.vim" ]; then
+        backup_file "$HOME/.config/nvim/init.vim"
+    fi
+    cp init.vim.temp "$HOME/.config/nvim/init.vim"
+}
+
+# Tmuxの設定ファイルを配置
+setup_tmux() {
+    if [ -f "$HOME/.tmux.conf" ]; then
+        backup_file "$HOME/.tmux.conf"
+    fi
+    cp tmux.conf.temp "$HOME/.tmux.conf"
+}
+
 # Neovim のインストール
 check_and_install_neovim
 
@@ -268,112 +285,7 @@ print_color "32" "Installed vim-plug"
 sudo -u $REAL_USER mkdir -p "${HOME_DIR}/.config/nvim"
 
 # init.vim の作成 (Neovim専用の設定)
-if handle_existing_config "${HOME_DIR}/.config/nvim/init.vim" "Neovim"; then
-    sudo -u $REAL_USER bash -c "cat << EOF > ${HOME_DIR}/.config/nvim/init.vim
-call plug#begin(stdpath('data') . '/plugged')
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': 'yarn install --frozen-lockfile'}
-Plug 'sheerun/vim-polyglot'
-Plug 'preservim/vim-markdown'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install' }
-Plug 'github/copilot.vim'
-Plug 'preservim/nerdtree'
-Plug 'Mofiqul/vscode.nvim'
-call plug#end()
-
-\" 基本設定
-set number
-set relativenumber
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set smartindent
-set clipboard+=unnamedplus
-syntax on
-filetype plugin indent on
-
-\" Disable compatibility with vi
-set nocompatible
-
-\" General settings
-set nobackup
-set autoindent
-set ul=0
-set showmode
-set report=1
-set showmatch
-set suffixes=.log,.aux,.dvi,.o,.bak,.swp
-
-\" Tab and indentation settings
-set tabstop=4
-set noexpandtab
-set smartindent
-set smarttab
-set shiftwidth=4
-set expandtab
-set smarttab
-
-\" Interface settings
-set wildmenu
-set nowrapscan
-set winheight=5
-set history=50
-set laststatus=1
-set ruler
-set incsearch
-set modeline
-set nobomb
-
-\" Key mappings
-map <C-g> :buffers<CR>
-map <C-k> :bdelete<CR>
-map <C-x>o <C-w><C-w><C-w>_
-
-\" Insert mode mappings
-inoremap <C-h> <BS>
-
-\" UTF-8 settings
-set ambiwidth=double
-set fileencoding=utf-8
-set encoding=utf-8
-set fileencodings=utf-8,euc-jp,japan,shift-jis,iso-2022-jp,cp932,utf-16,ucs-2-internal,ucs-2
-set termencoding=utf-8
-
-\" Additional key mappings
-map Q gq
-
-\" クリップボードとの統合
-set clipboard+=unnamedplus
-
-\" 視覚モードでの選択領域をクリップボードにコピーするキーマッピング
-vnoremap <C-c> \"+y
-
-\" キーマッピング
-nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-p> :Files<CR>
-
-\" Coc.nvim の設定
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? \"\<C-n>\" :
-      \ <SID>check_back_space() ? \"\<TAB>\" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? \"\<C-p>\" : \"\<C-h>\"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\\s'
-endfunction
-
-syntax enable
-set background=dark
-colorscheme vscode
-let g:vscode_style = \"dark\"
-EOF"
-    print_color "32" "Created Neovim-specific init.vim"
-fi
+setup_nvim
 
 # coc-settings.json の作成
 if handle_existing_config "${HOME_DIR}/.config/nvim/coc-settings.json" "coc.nvim"; then
@@ -427,29 +339,7 @@ if command -v node &> /dev/null && [ -f "${HOME_DIR}/.config/nvim/coc-settings.j
 fi
 
 # tmux の設定
-if handle_existing_config "${HOME_DIR}/.tmux.conf" "tmux"; then
-    sudo -u $REAL_USER bash -c "cat << EOF > ${HOME_DIR}/.tmux.conf
-# マウス操作を有効にする
-set -g mouse on
-
-# ウィンドウのインデックスを1から始める
-set -g base-index 1
-
-# ペインのインデックスを1から始める
-setw -g pane-base-index 1
-
-# 256色端末を使用する
-set -g default-terminal \"screen-256color\"
-
-# ステータスバーの色を設定する
-set -g status-fg white
-set -g status-bg black
-
-set-option -g history-limit 10000
-set-window-option -g mode-keys vi
-EOF"
-    print_color "32" "Created tmux.conf"
-fi
+setup_tmux
 
 # 所有権の確認と修正
 sudo chown -R $REAL_USER:$REAL_USER "${HOME_DIR}/.config/nvim" "${HOME_DIR}/.local/share/nvim" "${HOME_DIR}/.tmux.conf"
@@ -467,4 +357,3 @@ print_color "36" "1. Open Neovim and run ':Copilot auth' to initiate the authent
 print_color "36" "2. Follow the instructions in the browser to authorize GitHub Copilot."
 
 print_color "36" "Node.js を使用するには、新しいターミナルセッションを開始するか、'source ~/.bashrc'（または適切なシェル設定ファイル）を実行してください。"
-
