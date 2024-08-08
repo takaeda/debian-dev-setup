@@ -281,6 +281,7 @@ Plug 'preservim/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install' }
 Plug 'github/copilot.vim'
 Plug 'preservim/nerdtree'
+Plug 'Mofiqul/vscode.nvim'
 call plug#end()
 
 \" 基本設定
@@ -365,6 +366,11 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\\s'
 endfunction
+
+syntax enable
+set background=dark
+colorscheme vscode
+let g:vscode_style = \"dark\"
 EOF"
     print_color "32" "Created Neovim-specific init.vim"
 fi
