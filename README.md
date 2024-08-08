@@ -18,25 +18,46 @@ This script is designed to work on Debian-based Linux distributions that use the
 
 It may also work on other Debian derivatives like Linux Mint or Elementary OS, but hasn't been extensively tested on these platforms.
 
-## Usage
+## Execution Instructions on Development Server
 
-1. Clone this repository:
+Follow these steps to run this setup script on your development server:
+
+1. SSH into your development server.
+
+2. If Git is not installed, install it:
+   ```
+   sudo apt update
+   sudo apt install git
+   ```
+
+3. Clone this repository:
    ```
    git clone https://github.com/takaeda/debian-neovim-setup.git
    cd debian-neovim-setup
    ```
 
-2. Make the script executable:
+4. Make the script executable:
    ```
    chmod +x setup-dev-env.sh
    ```
 
-3. Run the script with sudo privileges:
+5. Run the script:
    ```
-   sudo ./setup-dev-env.sh
+   ./setup-dev-env.sh
    ```
 
-4. Follow the on-screen prompts to complete the installation.
+6. Follow the prompts to input necessary information and select installation options.
+
+7. After installation is complete, start a new terminal session or reload your shell configuration file:
+   ```
+   source ~/.bashrc  # or ~/.zshrc (depending on your shell)
+   ```
+
+8. Launch Neovim and run the health check:
+   ```
+   nvim
+   :checkhealth
+   ```
 
 ## Note
 
@@ -44,6 +65,14 @@ It may also work on other Debian derivatives like Linux Mint or Elementary OS, b
 - Existing configuration files will be backed up before modification.
 - After running the script, launch Neovim and run `:checkhealth` to ensure all dependencies are correctly installed.
 - While this script is designed for Debian-based systems, it may require modifications for non-Ubuntu distributions. Please report any issues you encounter on other systems.
+- This script is designed to work on Debian-based Linux distributions (e.g., Ubuntu, Debian).
+- To re-run the script, use the `--force` option:
+  ```
+  ./setup-dev-env.sh --force
+  ```
+- To use GitHub Copilot, run `:Copilot auth` in Neovim and complete the authentication process.
+
+If you encounter any issues during installation, please report them in the Issues section of this repository.
 
 ## Contributing
 
